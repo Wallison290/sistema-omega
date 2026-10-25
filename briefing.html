@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Briefing de vaga · Ômega</title>
+<meta name="description" content="Formulário de briefing de recrutamento e seleção da Ômega Gestão & Pessoas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/public.css">
+</head>
+<body class="pub">
+<header class="phero">
+  <span class="om" aria-hidden="true">Ω</span>
+  <div class="pwrap">
+    <span class="brand"><span class="mark">Ω</span><span><b>ômega</b><small>GESTÃO &amp; PESSOAS</small></span></span>
+    <div class="eyebrow">Recrutamento e seleção</div>
+    <h1>Briefing da sua vaga</h1>
+    <p>Conte para a Ômega como é a vaga e a pessoa que você procura. Suas respostas vão direto para a equipe, e o processo começa a partir delas.</p>
+    <div class="pmeta"><span id="m1"></span><span id="m2"></span></div>
+  </div>
+</header>
+<div class="progress-top"><div class="pwrap"><span id="ptxt">0 de 12 respondidas</span><i><em id="pbar"></em></i></div></div>
+<main class="pwrap pbody" id="main">
+  <form id="bf" class="pbody" style="padding:0" novalidate>
+    <section class="pcard">
+      <h2>Sobre a empresa</h2>
+      <p>Para sabermos de quem é a vaga e como falar com você.</p>
+      <div style="display:grid;gap:12px">
+        <label class="pfield">Empresa<input type="text" name="company" id="company" required autocomplete="organization"></label>
+        <div class="fg2">
+          <label class="pfield">Seu nome<input type="text" name="contact" id="contact" required autocomplete="name"></label>
+          <label class="pfield">WhatsApp<input type="tel" name="phone" id="phone" autocomplete="tel" placeholder="(87) 9 0000-0000"></label>
+        </div>
+      </div>
+    </section>
+    <div id="qs" style="display:grid;gap:14px"></div>
+    <div class="psubmit">
+      <p>Ao enviar, a vaga é criada no sistema da Ômega e você recebe a confirmação pelo WhatsApp.</p>
+      <button class="btn pri big" type="submit">Enviar briefing</button>
+    </div>
+  </form>
+</main>
+<p class="pfoot">Ômega Gestão &amp; Pessoas · formulário seguro do sistema Ômega</p>
+<script src="assets/data.js"></script>
+<script>
+(() => {
+  const Q = window.OMEGA_BRIEFING;
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const ico = p => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+  document.getElementById('m1').innerHTML = ico('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>') + 'Cerca de 5 minutos';
+  document.getElementById('m2').innerHTML = ico('<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/>') + 'Só a equipe da Ômega vê as respostas';
+
+  // Empresa já cadastrada: o link chega com ?c=<id> e o nome vem preenchido.
+  let clients = window.OMEGA_SEED.clients;
+  try { const s = JSON.parse(localStorage.getItem('omega-sistema-v3')); if (s?.clients) clients = s.clients } catch {}
+  const cid = new URLSearchParams(location.search).get('c');
+  const known = clients.find(c => c.id === cid);
+  if (known) { company.value = known.name; contact.value = known.contact; phone.value = known.phone || '' }
+
+  qs.innerHTML = Q.map((q, i) => {
+    const n = String(i + 1).padStart(2, '0');
+    const field = q.opts
+      ? `<div class="pills" role="radiogroup" aria-label="${esc(q.q)}">${q.opts.map(o => `<label><input type="radio" name="${q.k}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join('')}</div>`
+      : q.long ? `<textarea name="${q.k}" id="q-${q.k}" placeholder="Sua resposta"></textarea>`
+      : `<input type="text" name="${q.k}" id="q-${q.k}" placeholder="${esc(q.ph || 'Sua resposta')}" ${q.req ? 'required' : ''}>`;
+    return `<div class="q"><label class="ql" ${q.opts ? '' : `for="q-${q.k}"`}><span class="n">${n}</span><span>${esc(q.q)}${q.req ? ' <span class="req">*</span>' : ''}</span></label>${field}</div>`;
+  }).join('');
+
+  const answered = () => Q.filter(q => { const v = new FormData(bf).get(q.k); return v && String(v).trim() }).length;
+  const upd = () => { const n = answered(); ptxt.textContent = `${n} de ${Q.length} respondidas`; pbar.style.width = n / Q.length * 100 + '%' };
+  bf.addEventListener('input', upd); bf.addEventListener('change', upd); upd();
+
+  bf.addEventListener('submit', e => {
+    e.preventDefault();
+    const fd = new FormData(bf);
+    const answers = Object.fromEntries(Q.map(q => [q.k, String(fd.get(q.k) || '').trim()]));
+    if (!fd.get('company').trim()) { company.focus(); return }
+    if (!answers.vaga) { document.getElementById('q-vaga').focus(); return }
+    const item = { type: 'briefing', client: known?.id || null, company: fd.get('company').trim(), contact: fd.get('contact').trim(), phone: fd.get('phone').trim(), answers };
+    try { const box = JSON.parse(localStorage.getItem('omega-inbox') || '[]'); box.push(item); localStorage.setItem('omega-inbox', JSON.stringify(box)) } catch {}
+    document.querySelector('.progress-top').remove();
+    main.innerHTML = `<section class="pcard done"><span class="ok">${ico('<path d="m5 12 4 4L19 6"/>')}</span><div class="eyebrow">Briefing enviado</div><h2>Obrigado, ${esc(item.contact.split(' ')[0] || 'tudo certo')}.</h2><p>A Ômega recebeu o briefing da vaga <b>${esc(answers.vaga)}</b>. A equipe confere as respostas e fala com você pelo WhatsApp para iniciar a seleção.</p>
+      <div class="demo-note"><b>Demonstração</b>Volte para a aba do Sistema Ômega: a vaga já aparece em Recrutamento → Abertas, com todas as respostas.<a class="btn pri" href="index.html#recrutamento/vagas">Abrir o sistema</a></div></section>`;
+    scrollTo(0, 0);
+  });
+})();
+</script>
+</body>
+</html>

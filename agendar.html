@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agendar com a Ômega</title>
+<meta name="description" content="Escolha data e horário para conversar com a Ômega Gestão & Pessoas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/public.css">
+</head>
+<body class="pub">
+<header class="phero">
+  <span class="om" aria-hidden="true">Ω</span>
+  <div class="pwrap">
+    <span class="brand"><span class="mark">Ω</span><span><b>ômega</b><small>GESTÃO &amp; PESSOAS</small></span></span>
+    <div class="eyebrow">Agenda da Raffaella</div>
+    <h1>Escolha o melhor horário</h1>
+    <p>Veja os horários livres, escolha o seu e confirme. Você recebe a confirmação no WhatsApp e pode remarcar pelo mesmo link.</p>
+  </div>
+</header>
+<main class="pwrap pbody" id="main">
+  <section class="pcard">
+    <h2>1 · O que vamos fazer?</h2>
+    <p>A duração muda conforme o tipo de conversa.</p>
+    <div class="kinds" id="kinds"></div>
+  </section>
+  <section class="pcard">
+    <h2>2 · Dia e horário</h2>
+    <p id="tz">Horário de Brasília. Só aparecem horários livres.</p>
+    <div class="monthlbl" id="mlabel"></div>
+    <div class="dates" id="dates" role="listbox" aria-label="Datas disponíveis"></div>
+    <div class="slots" id="slots" style="margin-top:14px"></div>
+  </section>
+  <section class="pcard step-off" id="s3">
+    <h2>3 · Seus dados</h2>
+    <form id="bk" style="display:grid;gap:12px">
+      <div class="summary" id="sum"></div>
+      <label class="pfield">Empresa<input type="text" name="company" id="company" required autocomplete="organization"></label>
+      <div class="fg2">
+        <label class="pfield">Seu nome<input type="text" name="contact" id="contact" required autocomplete="name"></label>
+        <label class="pfield">WhatsApp<input type="tel" name="phone" id="phone" required autocomplete="tel" placeholder="(87) 9 0000-0000"></label>
+      </div>
+      <label class="pfield">Sobre o que quer conversar? (opcional)<input type="text" name="topic" placeholder="Ex.: contratar 2 atendentes"></label>
+      <div class="psubmit"><p>A Ômega confirma pelo WhatsApp. Para remarcar, use este mesmo link.</p><button class="btn pri big" type="submit">Confirmar agendamento</button></div>
+    </form>
+  </section>
+</main>
+<p class="pfoot">Ômega Gestão &amp; Pessoas · agendamento online do sistema Ômega</p>
+<script src="assets/data.js"></script>
+<script>
+(() => {
+  const TODAY = window.OMEGA_TODAY;
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const ico = p => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+  const addDays = (s, n) => { const x = new Date(s + 'T12:00:00'); x.setDate(x.getDate() + n); return x.toISOString().slice(0, 10) };
+  const hr = t => t.replace(/^0/, '').replace(':00', 'h').replace(':', 'h');
+  const toMin = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m };
+  const fromMin = n => `${String(Math.floor(n / 60)).padStart(2, '0')}:${String(n % 60).padStart(2, '0')}`;
+
+  let st = { clients: window.OMEGA_SEED.clients, events: window.OMEGA_SEED.events };
+  try { const s = JSON.parse(localStorage.getItem('omega-sistema-v3')); if (s?.events) st = s } catch {}
+  const cid = new URLSearchParams(location.search).get('c');
+  const known = st.clients.find(c => c.id === cid);
+  if (known) { company.value = known.name; contact.value = known.contact; phone.value = known.phone || '' }
+
+  const KINDS = [['reuniao', 'Conversa de apresentação', 'Conhecer a Ômega e falar da sua necessidade', 60], ['consultoria', 'Encontro de consultoria', 'Para clientes com consultoria contratada', 90]];
+  let pick = { kind: known?.stage === 'cliente' ? 'consultoria' : 'reuniao', date: null, time: null };
+  kinds.innerHTML = KINDS.map(([k, t, s, m]) => `<label class="kind"><input type="radio" name="kind" value="${k}" ${pick.kind === k ? 'checked' : ''}><span><b>${t}</b><small>${s} · ${m === 60 ? '1 hora' : '1h30'}</small></span></label>`).join('');
+  kinds.addEventListener('change', e => { pick.kind = e.target.value; pick.time = null; drawSlots(); step3() });
+
+  const dur = () => KINDS.find(k => k[0] === pick.kind)[3];
+  const busy = (date, time) => st.events.some(e => e.date === date && !['cancelado'].includes(e.status) && toMin(time) < toMin(e.end) && toMin(time) + dur() > toMin(e.time));
+  const days = [];
+  for (let i = 1; days.length < 12; i++) { const ds = addDays(TODAY, i); const wd = new Date(ds + 'T12:00:00').getDay(); if (wd > 0 && wd < 6) days.push(ds) }
+  const free = ds => window.OMEGA_SLOTS.filter(t => !busy(ds, t)).length;
+  function drawDates() {
+    mlabel.textContent = new Date(days[0] + 'T12:00:00').toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    dates.innerHTML = days.map(ds => { const dt = new Date(ds + 'T12:00:00'); const f = free(ds); return `<button class="dbtn ${pick.date === ds ? 'on' : ''}" data-d="${ds}" ${f ? '' : 'disabled'} role="option" aria-selected="${pick.date === ds}"><small>${dt.toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '')}</small><b>${dt.getDate()}</b><em>${f ? f + ' livres' : 'lotado'}</em></button>` }).join('');
+  }
+  function drawSlots() {
+    if (!pick.date) { slots.innerHTML = '<p style="grid-column:1/-1;margin:0;color:var(--muted);font-size:13.5px">Escolha um dia para ver os horários.</p>'; return }
+    slots.innerHTML = window.OMEGA_SLOTS.map(t => `<button class="slot ${pick.time === t ? 'on' : ''}" data-t="${t}" ${busy(pick.date, t) ? 'disabled aria-label="' + hr(t) + ' ocupado"' : ''}>${hr(t)}</button>`).join('');
+  }
+  function step3() {
+    s3.classList.toggle('step-off', !(pick.date && pick.time));
+    if (pick.date && pick.time) sum.innerHTML = ico('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>') + `<span><b>${new Date(pick.date + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}</b>, das ${hr(pick.time)} às ${hr(fromMin(toMin(pick.time) + dur()))} · ${KINDS.find(k => k[0] === pick.kind)[1]}</span>`;
+  }
+  dates.addEventListener('click', e => { const b = e.target.closest('.dbtn'); if (!b || b.disabled) return; pick.date = b.dataset.d; pick.time = null; drawDates(); drawSlots(); step3() });
+  slots.addEventListener('click', e => { const b = e.target.closest('.slot'); if (!b || b.disabled) return; pick.time = b.dataset.t; drawSlots(); step3(); s3.scrollIntoView({ behavior: 'smooth', block: 'start' }) });
+  drawDates(); drawSlots(); step3();
+
+  bk.addEventListener('submit', e => {
+    e.preventDefault();
+    const fd = new FormData(bk);
+    const item = { type: 'booking', client: known?.id || null, company: fd.get('company').trim(), contact: fd.get('contact').trim(), phone: fd.get('phone').trim(), kind: pick.kind, date: pick.date, time: pick.time, end: fromMin(toMin(pick.time) + dur()), topic: fd.get('topic').trim() || KINDS.find(k => k[0] === pick.kind)[1] };
+    try { const box = JSON.parse(localStorage.getItem('omega-inbox') || '[]'); box.push(item); localStorage.setItem('omega-inbox', JSON.stringify(box)) } catch {}
+    const when = new Date(pick.date + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+    main.innerHTML = `<section class="pcard done"><span class="ok">${ico('<path d="m5 12 4 4L19 6"/>')}</span><div class="eyebrow">Agendado</div><h2>${esc(when.replace(/^./, c => c.toUpperCase()))}, às ${hr(pick.time)}</h2><p>${esc(item.contact.split(' ')[0] || 'Pronto')}, seu horário com a Raffaella está reservado. A confirmação chega no WhatsApp ${esc(item.phone)}.</p>
+      <div class="demo-note"><b>Demonstração</b>Volte para a aba do Sistema Ômega: o compromisso já está em Consultorias e agenda, ligado ao cadastro de ${esc(item.company)}.<a class="btn pri" href="index.html#agenda/calendario">Abrir o sistema</a></div></section>`;
+    scrollTo(0, 0);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,21 +1,23 @@
 # Sistema Ômega
 
-Demonstração visual do sistema da Ômega (Gestão & Pessoas): recrutamento, consultorias, treinamentos e biblioteca de ferramentas, operados por um agente no WhatsApp e organizados num painel.
+Protótipo navegável do sistema de gestão da Ômega (consultoria, recrutamento e seleção). Dados fictícios e ações simuladas: ainda sem banco, sem WhatsApp real e sem assinatura digital. Tudo fica salvo só no navegador de quem usa.
 
-Ainda sem banco de dados nem n8n: os dados são de exemplo e ficam no navegador. As conversas com o agente são encenadas, mas gravam no painel como o sistema real faria.
+## Páginas
 
-## Telas
+- `index.html`: o painel.
+  - **Visão geral:** indicadores, pendências e próximos compromissos.
+  - **Agente no WhatsApp:** conversas de exemplo que gravam no painel.
+  - **CRM e clientes:** funil Lead → Qualificação → Proposta → Negociação → Cliente, perdidos e inativos, pesquisa de preços anteriores.
+  - **Recrutamento e seleção:** vagas em Abertas → Recrutamento → Seleção → Pendente → Fechadas, candidatos com origem, etapa e avaliações, respostas do formulário de briefing.
+  - **Consultorias e agenda:** calendário por mês e por semana, atendimentos com presença, falta e cancelamento, treinamentos.
+  - **Propostas e contratos:** modelos, prévia ao vivo, versões e contrato gerado da proposta aprovada.
+  - **Relatórios:** indicadores por área e relatório do cliente em PDF.
+  - **Automações**, **Biblioteca** e **Configurações**.
+- `briefing.html`: formulário de briefing da Ômega, que substitui o Google Forms. Aceita `?c=<id do cliente>` para preencher a empresa.
+- `agendar.html`: link público de agendamento com os horários livres. Também aceita `?c=`.
 
-- **Início:** números do mês, o que precisa de ação, agenda automática do dia e histórico de ações.
-- **Agente no WhatsApp:** conversas de exemplo para cada módulo (vaga por áudio, repetir vaga, currículo, relato pós-encontro, falta, treinamento, biblioteca, consultas, relatório).
-- **Clientes, Vagas, Consultorias, Treinamentos, Biblioteca:** cada registro mostra a origem (WhatsApp, Google Forms, painel ou automático) e também pode ser preenchido à mão.
-- **Agenda automática:** os fluxos do n8n (agenda do dia, pós-encontro, véspera, relato pendente, Forms, resumo do mês, saúde do WhatsApp).
-- **Relatórios:** relatório do cliente por período, pronto para PDF.
-- **Equipe e regras:** quem fala com o agente e as regras que ele segue.
+As páginas públicas entregam as respostas ao painel pelo `localStorage` (chave `omega-inbox`). Para ver chegar, abra o painel e a página pública no mesmo navegador.
 
-O botão **Explicações**, no topo, mostra ou esconde as faixas que explicam cada tela.
+O botão **Roteiro**, no topo do painel, segue os passos da demonstração do documento funcional e marca cada um quando é feito.
 
-## Arquivos
-
-- `index.html`, `assets/styles.css`, `assets/app.js`, `assets/data.js` (dados e conversas de exemplo).
-- `v1/`: primeira versão (apresentação da proposta e protótipo antigo).
+`v1/` guarda a primeira versão (apresentação da proposta e protótipo antigo).
