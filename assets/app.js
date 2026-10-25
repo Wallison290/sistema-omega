@@ -8,7 +8,7 @@ const TODAY = window.OMEGA_TODAY;
 const SCENES = window.OMEGA_SCENES;
 const FLOWS = window.OMEGA_FLOWS;
 const BRIEF = window.OMEGA_BRIEFING;
-const KEY = 'omega-sistema-v3';
+const KEY = 'omega-sistema-v4';
 const INBOX = 'omega-inbox';
 
 let state = load();
@@ -224,7 +224,7 @@ function inicio() {
     waBtn('', 'Falar com o assistente') + btn('Cadastrar', 'new', 'pri', 'plus'))
   + how('Formulário de briefing vira vaga, link de agendamento vira compromisso, a agenda dispara perguntas e lembretes.',
     'Tudo também pode ser feito à mão, aqui no sistema.',
-    'Raffaella e Lari mandam áudio ou texto e o assistente atualiza o sistema.')
+    'A Raffaella e a secretária mandam áudio ou texto e o assistente atualiza o sistema.')
   + `<div class="kpis">
       <div class="kpi"><span>Vagas em andamento</span><b>${s.active.length}</b><small>${s.pend.length} esperando resposta · ${s.closedM.length} fechadas no mês</small></div>
       <div class="kpi"><span>Currículos em outubro</span><b>${s.candM.length}</b><small>${newC.length} esperando análise</small></div>
@@ -232,7 +232,7 @@ function inicio() {
       <div class="kpi gold"><span>Propostas em andamento</span><b>${money(s.openValue)}</b><small>${s.open.length} propostas · ${money(s.value)} fechados em vagas</small></div>
     </div>
     <div class="grid2">
-      <section class="card"><div class="chead"><div><h2>O que precisa de você</h2><p>Coisas esperando você ou a Lari agirem.</p></div></div>${pend.map(([i, c, t, sm, b]) => `<div class="row"><span class="ri ${c}">${ic(i)}</span><span class="rt"><b>${esc(t)}</b><small>${esc(sm)}</small></span>${b}</div>`).join('') || '<div class="empty">Nada esperando por você.</div>'}</section>
+      <section class="card"><div class="chead"><div><h2>O que precisa de você</h2><p>Coisas esperando você ou a secretária agirem.</p></div></div>${pend.map(([i, c, t, sm, b]) => `<div class="row"><span class="ri ${c}">${ic(i)}</span><span class="rt"><b>${esc(t)}</b><small>${esc(sm)}</small></span>${b}</div>`).join('') || '<div class="empty">Nada esperando por você.</div>'}</section>
       <section class="card"><div class="chead"><div><h2>Próximos compromissos</h2><p>Sua agenda dos próximos dias.</p></div><a class="link" href="#agenda">Calendário${ic('arrow')}</a></div>
         ${next.map(e => `<div class="row click" data-act="event" data-id="${e.id}"><span class="datebox"><b>${e.date.slice(8)}</b>${new Date(e.date + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '')}</span><span class="rt"><b>${EVTYPE[e.type]} · ${esc(cname(e.client))}</b><small>${hr(e.time)} · ${EVL[e.status]}</small></span>${orig(e.origin)}</div>`).join('')}</section>
     </div>
@@ -249,7 +249,7 @@ function inicio() {
 const MOD = { recrutamento: ['Recrutamento', 'briefcase'], crm: ['Clientes e propostas', 'building'], agenda: ['Agenda', 'calendar'], inicio: ['Consultas', 'search'], relatorios: ['Relatórios', 'report'] };
 function agente() {
   return head('Assistente virtual · WhatsApp', 'O sistema inteiro, numa conversa.',
-    'A Raffaella e a Lari falam com o número da Ômega por áudio ou texto. O assistente entende, completa com o histórico, mostra um resumo e só grava depois do "confirmo". Candidatos também mandam currículo pelo mesmo número.')
+    'A Raffaella e a secretária falam com o número da Ômega por áudio ou texto. O assistente entende, completa com o histórico, mostra um resumo e só grava depois do "confirmo". Candidatos também mandam currículo pelo mesmo número.')
   + `<div class="how" aria-label="Como o assistente funciona">
       <div class="wa"><span class="hi">${ic('mic')}</span><b>1 · Fala do jeito dela</b><p>Áudio, texto, PDF ou foto. O áudio é transcrito e entendido.</p></div>
       <div class="pn"><span class="hi">${ic('search')}</span><b>2 · Ele completa</b><p>Busca cliente, vaga, preço anterior ou horário livre e pergunta só o que falta.</p></div>
@@ -646,7 +646,7 @@ function cfgForm() {
 function cfgAgent() {
   const rules = [
     ['Número próprio da Ômega', 'O assistente atende num chip só da Ômega. A Raffaella conversa com ele como com um contato.'],
-    ['Só Raffaella e Lari mexem nos dados', 'Qualquer outro número, como o de um candidato, só consegue mandar currículo.'],
+    ['Só a Raffaella e a secretária mexem nos dados', 'Qualquer outro número, como o de um candidato, só consegue mandar currículo.'],
     ['Áudio, texto ou arquivo', 'O áudio é transcrito. PDF vira currículo da vaga ou ferramenta da biblioteca.'],
     ['Completa com o histórico', 'Usa vagas, preços e encontros anteriores para perguntar só o que falta.'],
     ['Só grava depois do "confirmo"', 'Quem mandou confirma o resumo ali mesmo. Sem confirmação, nada entra.'],
@@ -756,7 +756,7 @@ function applyScene(scene) {
     closeJob() { closeJob('v1', 'c1'); return 'Vaga fechada. Quadro, cliente e relatório atualizados.' },
     sendBrief() { state.interactions.unshift({ client: 'horizonte', date: TODAY, kind: 'WhatsApp', who, text: 'Formulário de briefing enviado para Rodrigo.' }); log('Enviou o formulário de briefing para a Construtora Horizonte', 'crm', 'whatsapp'); return 'Formulário de briefing enviado.' },
     newLead() { state.clients.push({ id: 'bemestar', name: 'Farmácia Bem Estar', segment: 'Farmácia', stage: 'lead', contact: 'Lúcia', role: 'Gerente', phone: '(87) 99300-1212', email: '', services: [], since: TODAY, origin: 'whatsapp', meetingDay: '', lastContact: TODAY, potential: 3000, people: [['Lúcia', 'Gerente']] }); state.interactions.unshift({ client: 'bemestar', date: TODAY, kind: 'WhatsApp', who, text: 'Interesse em treinamento de atendimento. Link de agendamento enviado.' }); log('Anotou o contato Farmácia Bem Estar', 'crm', 'whatsapp'); return 'Contato criado.' },
-    confirmMeeting() { Object.assign(state.events.find(x => x.id === 'e1'), { status: 'realizado', topic: 'Feedback com os líderes', summary: 'Comparação da roda de competências com o mês anterior.', tool: 'Roda de competências', next: 'Plano de ação individual de cada líder.', origin: 'whatsapp', transcript: scene.msgs[1].text }); log('Contou por áudio como foi o encontro na Amorim', 'agenda', 'whatsapp'); return 'Encontro salvo.' },
+    confirmMeeting() { Object.assign(state.events.find(x => x.id === 'e1'), { status: 'realizado', topic: 'Feedback com os líderes', summary: 'Comparação da roda de competências com o mês anterior.', tool: 'Roda de competências', next: 'Plano de ação individual de cada líder.', origin: 'whatsapp', transcript: scene.msgs[1].text }); log('Contou por áudio como foi o encontro na Amorim', 'agenda', 'whatsapp'); done('atendimento'); return 'Encontro salvo.' },
     reschedule() { Object.assign(state.events.find(x => x.id === 'e12'), { date: '2026-11-03', status: 'confirmado' }); log('Remarcou a DEDARC para 03/11, 14h', 'agenda', 'whatsapp'); cal.y = 2026; cal.m = 10; return 'Encontro remarcado.' },
   };
   const msg = A[scene.apply]();
@@ -791,7 +791,7 @@ function closeAsk(id) {
 // ── Formulários manuais ─────────────────────────────────────────────────────
 const FORMS = {
   vaga: { title: 'Nova vaga', fields: [['client', 'Cliente', 'client'], ['title', 'Nome da vaga', 'text', 'Ex.: Analista de RH', 1], ['qty', 'Quantidade de vagas', 'number', '1'], ['fee', 'Quanto a Ômega cobra por vaga (R$)', 'number'], ['remuneracao', 'Salário e benefícios', 'text', 'Ex.: R$ 1.800 + vale-transporte'], ['modelo', 'Onde a pessoa vai trabalhar', 'sel', ['Presencial', 'Híbrida', 'Remota']]],
-    save(v) { const id = uid('j'); state.jobs.unshift({ id, title: v.title, client: v.client, qty: +v.qty || 1, fee: +v.fee || 0, stage: 'abertas', created: TODAY, origin: 'painel', brief: { remuneracao: v.remuneracao, modelo: v.modelo }, history: [[TODAY, 'Vaga cadastrada no painel', 'Raffaella']] }); return ['recrutamento', id, 'Vaga criada. Quando ela avançar, arraste o cartão para a próxima coluna.', 'vagas'] } },
+    save(v) { const id = uid('j'); state.jobs.unshift({ id, title: v.title, client: v.client, qty: +v.qty || 1, fee: +v.fee || 0, stage: 'abertas', created: TODAY, origin: 'painel', brief: { remuneracao: v.remuneracao, modelo: v.modelo }, history: [[TODAY, 'Vaga cadastrada no sistema', 'Raffaella']] }); done('vaga'); return ['recrutamento', id, 'Vaga criada. Quando ela avançar, arraste o cartão para a próxima coluna.', 'vagas'] } },
   candidato: { title: 'Adicionar currículo', fields: [['name', 'Nome', 'text', '', 1], ['job', 'Vaga', 'job'], ['origin', 'Como o currículo chegou', 'sel', [['email', 'E-mail'], ['indicacao', 'Indicação'], ['site', 'Anúncio'], ['painel', 'Outro']]], ['city', 'Cidade', 'text'], ['phone', 'Telefone', 'text'], ['cv', 'Arquivo do currículo', 'file'], ['notes', 'Observações', 'textarea']],
     save(v) { const id = uid('c'); state.candidates.unshift({ id, name: v.name, job: v.job, origin: v.origin, status: 'recebido', rating: 0, city: v.city || '—', phone: v.phone || '—', date: TODAY, notes: v.notes, evals: [] }); const j = jobOf(v.job); j.history = j.history || []; j.history.push([TODAY, 'Currículo de ' + v.name + ' adicionado', 'Raffaella']); done('cv'); return ['recrutamento', id, 'Currículo adicionado e ligado à vaga.', 'candidatos'] } },
   lead: { title: 'Novo contato', fields: [['name', 'Empresa', 'text', '', 1], ['contact', 'Contato', 'text'], ['phone', 'WhatsApp', 'text'], ['segment', 'Ramo da empresa', 'text'], ['stage', 'Em que etapa está', 'sel', CRMST], ['note', 'O que a empresa quer', 'textarea']],
@@ -904,6 +904,8 @@ const ACT = {
   doreset: () => { state = fresh(); save(); try { localStorage.removeItem(INBOX) } catch {} closeLayer(); go('inicio'); renderGuide(); toast('Demonstração reiniciada.') },
   menu: () => $('#side').classList.toggle('open'),
   guide: () => openGuide(),
+  guidereset: () => modal('Recomeçar do zero?', `<p style="margin:0">Tudo o que você criou ou mudou no teste será apagado, os dados de exemplo voltam ao início e os 9 passos ficam desmarcados.</p><div class="mactions"><button class="btn" data-act="guide">Cancelar</button>${btn('Sim, recomeçar', 'doguidereset', 'pri', 'undo')}</div>`),
+  doguidereset: () => { state = fresh(); save(); try { localStorage.removeItem(INBOX) } catch {} cal = { y: 2026, m: 9, mode: 'mes', w: 0 }; closeLayer(); go('inicio'); renderGuide(); openGuide(); toast('Tudo zerado. Pode começar pelo passo 1.') },
   guidego: el => { const g = GUIDE.find(x => x[0] === el.dataset.k); closeLayer(); g[3]() },
   welcomeguide: () => { seenIntro(); closeLayer(); openGuide() },
   welcomeclose: () => { seenIntro(); closeLayer() },
@@ -1063,13 +1065,13 @@ const GUIDE = [
 ];
 function renderGuide() { const n = GUIDE.filter(g => state.demo[g[0]]).length; $('#guideBtn').innerHTML = `${ic('list')}<span>Passo a passo</span><b>${n}/${GUIDE.length}</b>` }
 function openGuide() {
-  drawer(`<div><div class="eyebrow">Passo a passo do teste</div><h2>Veja o sistema funcionando</h2></div>`, `<p class="explain" style="margin:0">Cada passo é marcado sozinho quando você faz. O formulário e o agendamento abrem numa nova aba, como o cliente veria. Depois de enviar, volte para esta aba.</p>
+  drawer(`<div><div class="eyebrow">Passo a passo do teste</div><h2>Veja o sistema funcionando</h2></div>`, `<div class="restart"><span><b>Quer começar de novo?</b>Volta os dados de exemplo e desmarca todos os passos.</span>${btn('Recomeçar do zero', 'guidereset', '', 'undo')}</div><p class="explain" style="margin:0">Cada passo é marcado sozinho quando você faz. O formulário e o agendamento abrem numa nova aba, como o cliente veria. Depois de enviar, volte para esta aba.</p>
     <ol class="guide">${GUIDE.map(([k, t, sub], i) => `<li class="${state.demo[k] ? 'ok' : ''}"><span class="gn">${state.demo[k] ? ic('check') : i + 1}</span><span><b>${t}</b><small>${sub}</small></span>${btn(state.demo[k] ? 'Refazer' : 'Fazer', 'guidego', 'sm ' + (state.demo[k] ? '' : 'pri'), '', `data-k="${k}"`)}</li>`).join('')}</ol>`);
 }
 function seenIntro() { try { localStorage.setItem('omega-intro-v3', '1') } catch {} }
 function welcome() {
   modal('', `<div class="introhero"><span class="om" aria-hidden="true">Ω</span><div class="eyebrow">Sistema Ômega · versão de teste</div><h2>Gestão para consultoria, recrutamento e seleção.</h2><p>Clientes, vagas e candidatos, agenda, propostas, contratos e relatórios num só lugar. O que der, o sistema faz sozinho. O resto, você faz à mão com poucos cliques.</p></div>
-    <div class="pillars"><div><span class="n">01</span><b>O cliente se serve</b><p>Formulário de briefing e link de agendamento próprios da Ômega.</p></div><div><span class="n">02</span><b>O WhatsApp alimenta</b><p>Raffaella e Lari por áudio. Candidatos mandam currículo.</p></div><div><span class="n">03</span><b>O sistema guarda tudo</b><p>Histórico, preços praticados e indicadores sempre atualizados.</p></div></div>
+    <div class="pillars"><div><span class="n">01</span><b>O cliente se serve</b><p>Formulário de briefing e link de agendamento próprios da Ômega.</p></div><div><span class="n">02</span><b>O WhatsApp alimenta</b><p>A Raffaella e a secretária, por áudio. Candidatos mandam currículo.</p></div><div><span class="n">03</span><b>O sistema guarda tudo</b><p>Histórico, preços praticados e indicadores sempre atualizados.</p></div></div>
     <div class="mactions" style="padding:16px 20px 20px"><button class="btn" data-act="welcomeclose">Explorar por conta própria</button>${btn('Me mostre passo a passo', 'welcomeguide', 'pri', 'list')}</div>`, 'intro');
   $('#layer .modal .dbody').style.padding = '0';
 }

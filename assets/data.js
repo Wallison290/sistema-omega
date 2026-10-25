@@ -36,8 +36,8 @@ window.OMEGA_SEED = {
     { client: 'serra', date: '2026-10-25', kind: 'WhatsApp', who: 'Raffaella', text: 'Juliana pediu desconto para 2 vagas. Enviada versão 2 da proposta (R$ 1.600 por vaga).' },
     { client: 'vitta', date: '2026-10-24', kind: 'Proposta', who: 'Raffaella', text: 'Proposta de consultoria mensal enviada por e-mail e WhatsApp.' },
     { client: 'vitta', date: '2026-10-22', kind: 'Reunião', who: 'Raffaella', text: 'Diagnóstico: equipe de recepção com alta rotatividade. Interesse em 4 encontros por mês.' },
-    { client: 'horizonte', date: '2026-10-22', kind: 'Ligação', who: 'Lari', text: 'Indicação da Amorim. Precisa de engenheiro civil para obra em Petrolina. Pediu proposta.' },
-    { client: 'padaria', date: '2026-10-26', kind: 'WhatsApp', who: 'Lari', text: 'Chegou pelo Instagram. Quer contratar 2 atendentes de balcão. Agendar conversa.' },
+    { client: 'horizonte', date: '2026-10-22', kind: 'Ligação', who: 'Secretária', text: 'Indicação da Amorim. Precisa de engenheiro civil para obra em Petrolina. Pediu proposta.' },
+    { client: 'padaria', date: '2026-10-26', kind: 'WhatsApp', who: 'Secretária', text: 'Chegou pelo Instagram. Quer contratar 2 atendentes de balcão. Agendar conversa.' },
     { client: 'autopecas', date: '2026-05-12', kind: 'Nota', who: 'Raffaella', text: 'Fechamos vendedor de balcão. Ficaram de chamar para o estoque no segundo semestre.' },
     { client: 'nogueira', date: '2026-09-02', kind: 'Nota', who: 'Raffaella', text: 'Recusou a proposta: orçamento de R$ 1.200. Retomar em 2027.' },
     { client: 'amorim', date: '2026-10-20', kind: 'Reunião', who: 'Raffaella', text: 'Patrícia pediu dois finalistas para Analista de RH até sexta.' },
@@ -46,20 +46,20 @@ window.OMEGA_SEED = {
   jobs: [
     { id: 'v1', title: 'Analista de RH', client: 'amorim', qty: 1, fee: 2400, stage: 'selecao', flag: 'Aguardando o cliente escolher entre 2 finalistas', created: '2026-10-08', origin: 'briefing', proposal: 'p9',
       brief: { motivo: 'Expansão', problema: 'Estruturar a rotina de admissão e reduzir o tempo de contratação.', atividades: 'Triagem de currículos, entrevistas, integração de novos colaboradores.', primeiroDia: 'Rotinas de DP e uso de planilhas.', exige: 'Autonomia', atencao: 'Conversas difíceis com líderes e candidatos reprovados.', remuneracao: 'R$ 3.200 + VR + plano de saúde', horario: 'Seg a sex, 8h às 18h · 44h', modelo: 'Presencial', criterio: 'Postura consultiva com os líderes.', perfil: 'Comunicativo, organizado e discreto.' },
-      history: [['2026-10-08', 'Briefing recebido pelo formulário', 'Formulário'], ['2026-10-09', 'Movida para Recrutamento', 'Lari'], ['2026-10-16', 'Movida para Seleção', 'Raffaella'], ['2026-10-24', 'Marcada como pendente: aguardando o cliente', 'Raffaella']] },
+      history: [['2026-10-08', 'Briefing recebido pelo formulário', 'Formulário'], ['2026-10-09', 'Movida para Recrutamento', 'Secretária'], ['2026-10-16', 'Movida para Seleção', 'Raffaella'], ['2026-10-24', 'Marcada como pendente: aguardando o cliente', 'Raffaella']] },
     { id: 'v2', title: 'Assistente administrativo', client: 'flavine', qty: 1, fee: 1800, stage: 'abertas', created: '2026-10-22', origin: 'briefing', isNew: true,
       brief: { motivo: 'Reposição', problema: 'Organizar notas fiscais e o contas a pagar que ficou acumulado.', atividades: 'Lançamentos, conferência de notas, atendimento a fornecedores.', primeiroDia: 'Excel intermediário.', exige: 'Execução', atencao: 'Prazos de pagamento no fim do mês.', remuneracao: 'R$ 2.200 + VT', horario: 'Seg a sex, 8h às 17h · 44h', modelo: 'Presencial', criterio: 'Prova prática de Excel.', perfil: 'Detalhista e paciente.' },
       history: [['2026-10-22', 'Briefing recebido pelo formulário', 'Formulário']] },
     { id: 'v3', title: 'Vendedor interno', client: 'dedarc', qty: 2, fee: 1600, stage: 'recrutamento', created: '2026-10-13', origin: 'whatsapp', proposal: null,
       brief: { motivo: 'Expansão', problema: 'Atender a nova carteira de clientes do interior.', atividades: 'Prospecção por telefone, pedidos, pós-venda.', primeiroDia: 'Experiência com metas de vendas.', exige: 'Execução', atencao: 'Clientes insatisfeitos com prazo de entrega.', remuneracao: 'R$ 2.100 + comissão', horario: 'Seg a sáb, escala · 44h', modelo: 'Presencial', criterio: 'Simulação de venda por telefone.', perfil: 'Persistente e cordial.' },
-      history: [['2026-10-13', 'Vaga aberta pelo WhatsApp', 'Raffaella'], ['2026-10-15', 'Anúncio publicado · captação de currículos', 'Lari']] },
+      history: [['2026-10-13', 'Vaga aberta pelo WhatsApp', 'Raffaella'], ['2026-10-15', 'Anúncio publicado · captação de currículos', 'Secretária']] },
     { id: 'v4', title: 'Coordenador comercial', client: 'amorim', qty: 1, fee: 3500, stage: 'fechadas', created: '2026-09-22', closed: '2026-10-20', hired: 'Eduardo Farias', origin: 'whatsapp',
       brief: { motivo: 'Nova posição', remuneracao: 'R$ 5.500 + bônus', horario: 'Seg a sex · 44h', modelo: 'Presencial', exige: 'Gestão de pessoas' },
       history: [['2026-09-22', 'Vaga aberta', 'Raffaella'], ['2026-10-20', 'Fechada · Eduardo Farias contratado', 'Raffaella']] },
     { id: 'v5', title: 'Auxiliar de logística', client: 'flavine', qty: 1, fee: 1500, stage: 'fechadas', created: '2026-10-05', closed: '2026-10-17', hired: 'Luan Barbosa', origin: 'painel',
-      brief: { motivo: 'Reposição', remuneracao: 'R$ 1.800', modelo: 'Presencial', exige: 'Execução' }, history: [['2026-10-05', 'Vaga aberta', 'Lari'], ['2026-10-17', 'Fechada · Luan Barbosa', 'Lari']] },
+      brief: { motivo: 'Reposição', remuneracao: 'R$ 1.800', modelo: 'Presencial', exige: 'Execução' }, history: [['2026-10-05', 'Vaga aberta', 'Secretária'], ['2026-10-17', 'Fechada · Luan Barbosa', 'Secretária']] },
     { id: 'v6', title: 'Recepcionista', client: 'flavine', qty: 1, fee: 1500, stage: 'fechadas', created: '2026-09-02', closed: '2026-09-14', hired: 'Bianca Nunes', origin: 'briefing',
-      brief: { motivo: 'Reposição', remuneracao: 'R$ 1.900 + VT', horario: 'Seg a sáb, comercial', modelo: 'Presencial', exige: 'Execução', perfil: 'Simpática e organizada.' }, history: [['2026-09-02', 'Briefing recebido', 'Formulário'], ['2026-09-14', 'Fechada · Bianca Nunes', 'Lari']] },
+      brief: { motivo: 'Reposição', remuneracao: 'R$ 1.900 + VT', horario: 'Seg a sáb, comercial', modelo: 'Presencial', exige: 'Execução', perfil: 'Simpática e organizada.' }, history: [['2026-09-02', 'Briefing recebido', 'Formulário'], ['2026-09-14', 'Fechada · Bianca Nunes', 'Secretária']] },
     { id: 'v7', title: 'Consultor de vendas externo', client: 'solaris', qty: 3, fee: 1700, stage: 'recrutamento', created: '2026-10-14', origin: 'whatsapp', proposal: 'p10',
       brief: { motivo: 'Expansão', remuneracao: 'R$ 2.500 + comissão', modelo: 'Presencial', exige: 'Autonomia', primeiroDia: 'CNH B e moto ou carro próprio.' }, history: [['2026-10-14', 'Vaga aberta pelo WhatsApp', 'Raffaella']] },
     { id: 'v8', title: 'Auxiliar administrativo', client: 'amorim', qty: 1, fee: 1500, stage: 'fechadas', created: '2026-03-02', closed: '2026-03-20', hired: 'Mariana Souza', origin: 'painel', proposal: 'p1',
@@ -156,7 +156,7 @@ window.OMEGA_SCENES = [
       { from: 'me', text: 'Mantém' },
       { from: 'bot', type: 'card', title: 'Nova vaga', rows: [['Cliente', 'Amorim'], ['Vaga', 'Auxiliar administrativo'], ['Posições', '2'], ['Remuneração', 'R$ 1.800'], ['Valor por vaga', 'R$ 1.500'], ['Horário', 'Seg a sex, 8h às 18h'], ['Modelo', 'Presencial']], ask: 'Posso criar?' },
       { from: 'me', text: 'Pode criar' },
-      { from: 'bot', text: 'Vaga criada em Abertas. A Lari já foi avisada.', link: 'Ver a vaga no painel' },
+      { from: 'bot', text: 'Vaga criada em Abertas. A secretária já foi avisada.', link: 'Ver a vaga no sistema' },
     ] },
   { id: 'candidato', module: 'recrutamento', title: 'Candidato manda currículo', hint: 'Número de fora: o assistente só recebe currículo', who: 'Candidato', apply: 'newCandidate',
     msgs: [
@@ -164,7 +164,7 @@ window.OMEGA_SCENES = [
       { from: 'bot', text: 'Boa tarde! Está sim. Pode me mandar seu currículo em PDF e me dizer seu nome completo e a cidade onde mora?' },
       { from: 'me', type: 'file', name: 'Curriculo Renata Campos.pdf', size: '182 KB', text: 'Renata Campos, moro em Petrolina' },
       { from: 'bot', text: 'Recebido, Renata. Seu currículo foi encaminhado para a vaga Vendedor interno. Se você avançar, a equipe da Ômega entra em contato por aqui.' },
-      { from: 'bot', auto: true, text: 'Para a Lari: novo currículo de Renata Campos em Vendedor interno · DEDARC, origem WhatsApp.', link: 'Ver a candidata' },
+      { from: 'bot', auto: true, text: 'Para a secretária: novo currículo de Renata Campos em Vendedor interno · DEDARC, origem WhatsApp.', link: 'Ver a candidata' },
     ] },
   { id: 'fechar-vaga', module: 'recrutamento', title: 'Fechar uma vaga', hint: 'Status, histórico do cliente e relatório mudam juntos', apply: 'closeJob',
     msgs: [
@@ -224,9 +224,9 @@ window.OMEGA_SCENES = [
 
 // Automações, na ordem do dia.
 window.OMEGA_FLOWS = [
-  { id: 'agente', name: 'Assistente do WhatsApp', when: 'Sempre ligado', desc: 'Recebe áudio, texto e arquivos da Raffaella e da Lari, entende o pedido, pergunta o que falta e grava depois da confirmação.', steps: ['WhatsApp', 'Áudio vira texto', 'Assistente entende', 'Você confirma', 'Sistema'], last: 'há 3 min', scene: 'nova-vaga' },
-  { id: 'curriculos', name: 'Entrada de currículos', when: 'Quando um candidato escreve', desc: 'Números de fora só conseguem mandar currículo. O agente pede nome e cidade, liga à vaga certa e avisa a Lari.', steps: ['Candidato', 'Currículo', 'Vaga', 'Aviso à Lari'], last: 'ontem, 18h40', scene: 'candidato', sample: 'Recebido, Renata. Seu currículo foi encaminhado para a vaga Vendedor interno.' },
-  { id: 'briefing', name: 'Formulário de briefing', when: 'Quando o cliente envia', desc: 'O formulário da própria Ômega vira uma vaga em Abertas, com todas as respostas, e a Lari é avisada.', steps: ['Formulário', 'Nova vaga', 'Aviso à Lari'], last: '22/10, 10h18', sample: 'Lari, a Flavine preencheu o briefing de Assistente administrativo. A vaga já está em Abertas.' },
+  { id: 'agente', name: 'Assistente do WhatsApp', when: 'Sempre ligado', desc: 'Recebe áudio, texto e arquivos da Raffaella e da secretária, entende o pedido, pergunta o que falta e grava depois da confirmação.', steps: ['WhatsApp', 'Áudio vira texto', 'Assistente entende', 'Você confirma', 'Sistema'], last: 'há 3 min', scene: 'nova-vaga' },
+  { id: 'curriculos', name: 'Entrada de currículos', when: 'Quando um candidato escreve', desc: 'Números de fora só conseguem mandar currículo. O agente pede nome e cidade, liga à vaga certa e avisa a secretária.', steps: ['Candidato', 'Currículo', 'Vaga', 'Aviso à secretária'], last: 'ontem, 18h40', scene: 'candidato', sample: 'Recebido, Renata. Seu currículo foi encaminhado para a vaga Vendedor interno.' },
+  { id: 'briefing', name: 'Formulário de briefing', when: 'Quando o cliente envia', desc: 'O formulário da própria Ômega vira uma vaga em Abertas, com todas as respostas, e a secretária é avisada.', steps: ['Formulário', 'Nova vaga', 'Aviso à secretária'], last: '22/10, 10h18', sample: 'Para a secretária: a Flavine preencheu o briefing de Assistente administrativo. A vaga já está em Abertas.' },
   { id: 'agendamento', name: 'Agendamento pelo link', when: 'Quando o cliente escolhe um horário', desc: 'Cria o compromisso na agenda, liga ao cadastro do cliente e manda a confirmação para os dois lados.', steps: ['Link público', 'Agenda', 'Confirmação'], last: '24/10, 9h12', sample: 'Dr. Henrique, confirmado: quinta, 29/10, às 10h30, com a Raffaella. Para remarcar, use o mesmo link.' },
   { id: 'agenda-dia', name: 'Agenda do dia', when: 'Dias úteis, 7h30', desc: 'Manda os compromissos do dia com o próximo passo de cada cliente.', steps: ['Agenda', 'Histórico', 'WhatsApp'], last: 'hoje, 7h30', sample: 'Bom dia, Rafa. Hoje: 14h Amorim (consultoria). Próximo passo: acompanhar os planos de ação.' },
   { id: 'pos-encontro', name: 'Pergunta pós-encontro', when: 'Quando um encontro termina', desc: 'Pergunta o que rolou. O áudio vira o registro do encontro depois do "confirmo".', steps: ['Agenda', 'Pergunta', 'Seu áudio', 'Resumo', 'Você confirma'], last: 'hoje, 16h05', scene: 'pos-encontro' },
@@ -238,7 +238,7 @@ window.OMEGA_FLOWS = [
 
 window.OMEGA_TEAM = [
   { name: 'Raffaella', role: 'Administradora', phone: '(87) 9••••-••12', perms: { crm: 'Editar', recrutamento: 'Editar', agenda: 'Editar', propostas: 'Editar', relatorios: 'Ver', valores: 'Sim' } },
-  { name: 'Lari', role: 'Assistente', phone: '(87) 9••••-••48', perms: { crm: 'Editar', recrutamento: 'Editar', agenda: 'Editar', propostas: 'Ver', relatorios: 'Ver', valores: 'A combinar' } },
+  { name: 'Secretária', role: 'Ajuda na rotina', phone: '(87) 9••••-••48', perms: { crm: 'Editar', recrutamento: 'Editar', agenda: 'Editar', propostas: 'Ver', relatorios: 'Ver', valores: 'A combinar' } },
 ];
 
 // Horários que o link público de agendamento oferece.

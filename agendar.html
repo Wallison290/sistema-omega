@@ -61,7 +61,7 @@
   const fromMin = n => `${String(Math.floor(n / 60)).padStart(2, '0')}:${String(n % 60).padStart(2, '0')}`;
 
   let st = { clients: window.OMEGA_SEED.clients, events: window.OMEGA_SEED.events };
-  try { const s = JSON.parse(localStorage.getItem('omega-sistema-v3')); if (s?.events) st = s } catch {}
+  try { const s = JSON.parse(localStorage.getItem('omega-sistema-v4')); if (s?.events) st = s } catch {}
   const cid = new URLSearchParams(location.search).get('c');
   const known = st.clients.find(c => c.id === cid);
   if (known) { company.value = known.name; contact.value = known.contact; phone.value = known.phone || '' }

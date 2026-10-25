@@ -55,7 +55,7 @@
 
   // Empresa já cadastrada: o link chega com ?c=<id> e o nome vem preenchido.
   let clients = window.OMEGA_SEED.clients;
-  try { const s = JSON.parse(localStorage.getItem('omega-sistema-v3')); if (s?.clients) clients = s.clients } catch {}
+  try { const s = JSON.parse(localStorage.getItem('omega-sistema-v4')); if (s?.clients) clients = s.clients } catch {}
   const cid = new URLSearchParams(location.search).get('c');
   const known = clients.find(c => c.id === cid);
   if (known) { company.value = known.name; contact.value = known.contact; phone.value = known.phone || '' }
