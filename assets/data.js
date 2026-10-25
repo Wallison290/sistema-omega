@@ -158,7 +158,7 @@ window.OMEGA_SCENES = [
       { from: 'me', text: 'Pode criar' },
       { from: 'bot', text: 'Vaga criada em Abertas. A Lari já foi avisada.', link: 'Ver a vaga no painel' },
     ] },
-  { id: 'candidato', module: 'recrutamento', title: 'Candidato manda currículo', hint: 'Número desconhecido: o agente só recebe currículo', who: 'Candidato', apply: 'newCandidate',
+  { id: 'candidato', module: 'recrutamento', title: 'Candidato manda currículo', hint: 'Número de fora: o assistente só recebe currículo', who: 'Candidato', apply: 'newCandidate',
     msgs: [
       { from: 'me', text: 'Boa tarde, vi a vaga de vendedor interno no Instagram. Ainda está aberta?' },
       { from: 'bot', text: 'Boa tarde! Está sim. Pode me mandar seu currículo em PDF e me dizer seu nome completo e a cidade onde mora?' },
@@ -187,18 +187,18 @@ window.OMEGA_SCENES = [
       { from: 'me', text: 'Faz uma proposta pro Hotel Serra Azul de 1.600 então' },
       { from: 'bot', text: 'A proposta do Hotel Serra Azul já está em negociação com R$ 1.600 por vaga (versão 2, enviada em 25/10). Quer que eu mande um lembrete para a Juliana?', link: 'Ver a proposta' },
     ] },
-  { id: 'novo-lead', module: 'crm', title: 'Registrar um novo contato', hint: 'Vira lead no funil do CRM', apply: 'newLead',
+  { id: 'novo-lead', module: 'crm', title: 'Registrar um novo contato', hint: 'A empresa entra em Clientes e contatos', apply: 'newLead',
     msgs: [
-      { from: 'me', text: 'Anota um lead: Farmácia Bem Estar, falei com a Lúcia, 87 99300-1212. Quer treinamento de atendimento.' },
-      { from: 'bot', type: 'card', title: 'Novo lead', rows: [['Empresa', 'Farmácia Bem Estar'], ['Contato', 'Lúcia'], ['WhatsApp', '(87) 99300-1212'], ['Interesse', 'Treinamento de atendimento']], ask: 'Crio no funil como Lead? Quer que eu mande o link de agendamento para ela?' },
+      { from: 'me', text: 'Anota um contato novo: Farmácia Bem Estar, falei com a Lúcia, 87 99300-1212. Quer treinamento de atendimento.' },
+      { from: 'bot', type: 'card', title: 'Novo contato', rows: [['Empresa', 'Farmácia Bem Estar'], ['Contato', 'Lúcia'], ['WhatsApp', '(87) 99300-1212'], ['Interesse', 'Treinamento de atendimento']], ask: 'Coloco em Primeiro contato? Quer que eu mande o link de agendamento para ela?' },
       { from: 'me', text: 'Sim pros dois' },
-      { from: 'bot', text: 'Lead criado e link de agendamento enviado para a Lúcia.', link: 'Ver no CRM' },
+      { from: 'bot', text: 'Contato criado e link de agendamento enviado para a Lúcia.', link: 'Ver o contato' },
     ] },
   { id: 'pos-encontro', module: 'agenda', title: 'Relato depois do encontro', hint: 'A agenda dispara a pergunta, ela responde em áudio', auto: true, apply: 'confirmMeeting',
     msgs: [
       { from: 'bot', auto: true, text: 'Rafa, o encontro na Amorim terminou às 16h. O que rolou hoje? Pode mandar em áudio.' },
       { from: 'me', type: 'audio', dur: '1:04', text: 'Hoje na Amorim a gente trabalhou feedback com os líderes. Usei a roda de competências pra comparar com o mês passado. Cada líder traz o plano de ação individual semana que vem. Todo mundo foi.' },
-      { from: 'bot', type: 'card', title: 'Atendimento · Amorim · 27/10', rows: [['Pauta', 'Feedback com os líderes'], ['Ferramenta', 'Roda de competências'], ['Próximo passo', 'Plano de ação individual de cada líder'], ['Presença', 'Presente']], ask: 'Confirma o registro?' },
+      { from: 'bot', type: 'card', title: 'Encontro · Amorim · 27/10', rows: [['Pauta', 'Feedback com os líderes'], ['Ferramenta', 'Roda de competências'], ['Próximo passo', 'Plano de ação individual de cada líder'], ['Presença', 'Presente']], ask: 'Confirma o registro?' },
       { from: 'me', text: 'Confirmo' },
       { from: 'bot', text: 'Registrado no histórico da Amorim. Na véspera do próximo encontro eu te lembro do próximo passo.', link: 'Ver o atendimento' },
     ] },
@@ -217,23 +217,23 @@ window.OMEGA_SCENES = [
   { id: 'relatorio', module: 'relatorios', title: 'Pedir o relatório do cliente', hint: 'O PDF chega no WhatsApp',
     msgs: [
       { from: 'me', text: 'Manda o relatório da Amorim dos últimos 6 meses' },
-      { from: 'bot', text: 'Montando o relatório de maio a outubro com atendimentos, faltas, ferramentas e vagas.' },
+      { from: 'bot', text: 'Montando o relatório de maio a outubro com encontros, faltas, ferramentas e vagas.' },
       { from: 'bot', type: 'file', name: 'Relatorio-Amorim-mai-out-2026.pdf', size: '410 KB', text: 'Pronto. Pode encaminhar direto para a Patrícia.' },
     ] },
 ];
 
 // Automações, na ordem do dia.
 window.OMEGA_FLOWS = [
-  { id: 'agente', name: 'Agente Ômega', when: 'Sempre ativo', desc: 'Recebe áudio, texto e arquivos da Raffaella e da Lari, entende o pedido, pergunta o que falta e grava depois da confirmação.', steps: ['WhatsApp', 'Transcrição', 'Agente de IA', 'Confirmação', 'Sistema'], last: 'há 3 min', scene: 'nova-vaga' },
-  { id: 'curriculos', name: 'Entrada de currículos', when: 'Quando um candidato escreve', desc: 'Números desconhecidos só conseguem mandar currículo. O agente pede nome e cidade, liga à vaga certa e avisa a Lari.', steps: ['Candidato', 'Currículo', 'Vaga', 'Aviso à Lari'], last: 'ontem, 18h40', scene: 'candidato', sample: 'Recebido, Renata. Seu currículo foi encaminhado para a vaga Vendedor interno.' },
+  { id: 'agente', name: 'Assistente do WhatsApp', when: 'Sempre ligado', desc: 'Recebe áudio, texto e arquivos da Raffaella e da Lari, entende o pedido, pergunta o que falta e grava depois da confirmação.', steps: ['WhatsApp', 'Áudio vira texto', 'Assistente entende', 'Você confirma', 'Sistema'], last: 'há 3 min', scene: 'nova-vaga' },
+  { id: 'curriculos', name: 'Entrada de currículos', when: 'Quando um candidato escreve', desc: 'Números de fora só conseguem mandar currículo. O agente pede nome e cidade, liga à vaga certa e avisa a Lari.', steps: ['Candidato', 'Currículo', 'Vaga', 'Aviso à Lari'], last: 'ontem, 18h40', scene: 'candidato', sample: 'Recebido, Renata. Seu currículo foi encaminhado para a vaga Vendedor interno.' },
   { id: 'briefing', name: 'Formulário de briefing', when: 'Quando o cliente envia', desc: 'O formulário da própria Ômega vira uma vaga em Abertas, com todas as respostas, e a Lari é avisada.', steps: ['Formulário', 'Nova vaga', 'Aviso à Lari'], last: '22/10, 10h18', sample: 'Lari, a Flavine preencheu o briefing de Assistente administrativo. A vaga já está em Abertas.' },
   { id: 'agendamento', name: 'Agendamento pelo link', when: 'Quando o cliente escolhe um horário', desc: 'Cria o compromisso na agenda, liga ao cadastro do cliente e manda a confirmação para os dois lados.', steps: ['Link público', 'Agenda', 'Confirmação'], last: '24/10, 9h12', sample: 'Dr. Henrique, confirmado: quinta, 29/10, às 10h30, com a Raffaella. Para remarcar, use o mesmo link.' },
   { id: 'agenda-dia', name: 'Agenda do dia', when: 'Dias úteis, 7h30', desc: 'Manda os compromissos do dia com o próximo passo de cada cliente.', steps: ['Agenda', 'Histórico', 'WhatsApp'], last: 'hoje, 7h30', sample: 'Bom dia, Rafa. Hoje: 14h Amorim (consultoria). Próximo passo: acompanhar os planos de ação.' },
-  { id: 'pos-encontro', name: 'Pergunta pós-encontro', when: 'Quando um atendimento termina', desc: 'Pergunta o que rolou. O áudio vira o registro do atendimento depois do "confirmo".', steps: ['Agenda', 'Pergunta', 'Áudio', 'Resumo', 'Confirmação'], last: 'hoje, 16h05', scene: 'pos-encontro' },
+  { id: 'pos-encontro', name: 'Pergunta pós-encontro', when: 'Quando um encontro termina', desc: 'Pergunta o que rolou. O áudio vira o registro do encontro depois do "confirmo".', steps: ['Agenda', 'Pergunta', 'Seu áudio', 'Resumo', 'Você confirma'], last: 'hoje, 16h05', scene: 'pos-encontro' },
   { id: 'lembretes', name: 'Lembretes e confirmações', when: 'Véspera, 18h', desc: 'Lembra a Raffaella e pede confirmação do cliente. Se o cliente remarcar, a agenda se atualiza.', steps: ['Agenda de amanhã', 'Cliente confirma', 'Agenda'], last: 'ontem, 18h', sample: 'Patrícia, confirmando o treinamento de amanhã às 9h na sede da Amorim. Responda 1 para confirmar ou 2 para remarcar.' },
   { id: 'propostas', name: 'Acompanhamento de propostas', when: '3 dias sem resposta', desc: 'Avisa quando uma proposta enviada ficou parada e sugere a mensagem de retomada.', steps: ['Proposta enviada', '3 dias', 'Lembrete'], last: 'hoje, 9h', sample: 'Rafa, a proposta da Clínica Vitta foi enviada há 3 dias e ainda não teve resposta. Quer que eu mande um lembrete ao Dr. Henrique?' },
-  { id: 'inativos', name: 'Clientes inativos', when: 'Toda segunda, 8h', desc: 'Lista clientes sem atividade há mais de 90 dias e oportunidades perdidas que podem ser retomadas.', steps: ['CRM', 'Sem atividade', 'Sugestão'], last: '26/10, 8h', sample: 'Auto Peças Lima está sem atividade desde maio. Eles falaram em contratar para o estoque no segundo semestre.' },
-  { id: 'mensal', name: 'Resumo do mês', when: 'Dia 1, 8h', desc: 'Vagas, contratações, atendimentos, faltas, propostas e valores do mês que passou.', steps: ['Dados do mês', 'Resumo', 'WhatsApp'], last: '01/10, 8h' },
+  { id: 'inativos', name: 'Clientes sem contato', when: 'Toda segunda, 8h', desc: 'Lista clientes sem contato há mais de 3 meses e propostas que não fecharam e podem ser retomadas.', steps: ['CRM', 'Sem atividade', 'Sugestão'], last: '26/10, 8h', sample: 'Auto Peças Lima está sem atividade desde maio. Eles falaram em contratar para o estoque no segundo semestre.' },
+  { id: 'mensal', name: 'Resumo do mês', when: 'Dia 1, 8h', desc: 'Vagas, contratações, encontros, faltas, propostas e valores do mês que passou.', steps: ['Dados do mês', 'Resumo', 'WhatsApp'], last: '01/10, 8h' },
 ];
 
 window.OMEGA_TEAM = [
